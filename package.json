@@ -1,7 +1,7 @@
 {
   "name": "emmit",
   "version": "1.0.0",
-  "main": "Emmit.js",
+  "main": "dist/Emmit.js",
   "license": "MIT",
   "author": {
     "name": "Ryan Poole",
@@ -9,9 +9,11 @@
   },
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest /src",
+    "build": "babel ./src/Emmit.js -o ./dist/Emmit.js"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.20.0",
     "babel-preset-es2015": "^6.18.0",
     "jest": "^17.0.3"
