@@ -1,27 +1,31 @@
 export default class Emmit {
   constructor () {
     this.events = new Map();
-    this.singleEvents = new Map();
   }
-  emit (event, props) {
+  emit (event, ...props) {
     if (this.events.has(event)) {
-      this.events.get(event).forEach((e) => e(props));
+      let events = this.events.get(event);
+      events.forEach((e) => e.fn.apply(this, props));
+      events = events.filter((e) => !e.once);
+      if (events.length > 0) {
+        this.events.set(event, events);
+      } else {
+        this.events.delete(event);
+      }
     }
-    if (this.singleEvents.has(event)) {
-      this.singleEvents.get(event).forEach((e) => e(props));
-    }
-    this.singleEvents.delete(event);
   }
-  on (event, f) {
+  on (event, fn, options) {
+    options = {
+      once: false,
+      fn,
+      ...options
+    }
     if (!this.events.has(event)) {
       this.events.set(event, []);
     }
-    this.events.get(event).push(f);
+    this.events.get(event).push(options);
   }
   once (event, f) {
-    if (!this.singleEvents.has(event)) {
-      this.singleEvents.set(event, []);
-    }
-    this.singleEvents.get(event).push(f);
+    this.on(event, f, { once: true });
   }
 }
