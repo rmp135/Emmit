@@ -65,6 +65,16 @@ describe("Emmit", () => {
       expect(mock).toHaveBeenCalled();
       expect(mock2).toHaveBeenCalled();
       expect(mock3).not.toHaveBeenCalled();
-    })
+    });
+  });
+  describe("off", () => {
+    it("should remove an event by name", () => {
+      e.on("event", mock);
+      expect(e.events.size).toBe(1);
+      e.off("event");
+      expect(e.events.size).toBe(0);
+      e.emit("event");
+      expect(mock).not.toHaveBeenCalled();
+    });
   });
 });

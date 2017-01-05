@@ -31,6 +31,9 @@ export default class Emmit {
     }
     this.events.get(event).push(options);
   }
+  off (event) {
+    this.events.delete(event);
+  }
   once (event, f) {
     this.on(event, f, { once: true });
   }
