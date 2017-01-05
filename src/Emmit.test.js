@@ -55,10 +55,16 @@ describe("Emmit", () => {
       expect(mock.mock.calls[0][0]).toBe(mockArg1);
       expect(mock.mock.calls[0][1]).toBe(mockArg2);
     });
-    // it("should trigger through a regular expression", () => {
-    //   const mock = jest.fn();
-    //   e.on("event", mock);
-    //   e.emit(/.*/, mockArg1)
-    // })
+    it("should trigger through a regular expression", () => {
+      const mock2 = jest.fn();
+      const mock3 = jest.fn();
+      e.on("event.one", mock);
+      e.on("event.two", mock2);
+      e.on("other.one", mock3);
+      e.emit(/event.*/, mockArg1);
+      expect(mock).toHaveBeenCalled();
+      expect(mock2).toHaveBeenCalled();
+      expect(mock3).not.toHaveBeenCalled();
+    })
   });
 });

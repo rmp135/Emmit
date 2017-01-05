@@ -3,15 +3,21 @@ export default class Emmit {
     this.events = new Map();
   }
   emit (event, ...props) {
-    if (this.events.has(event)) {
-      let events = this.events.get(event);
-      events.forEach((e) => e.fn.apply(this, props));
-      events = events.filter((e) => !e.once);
-      if (events.length > 0) {
-        this.events.set(event, events);
-      } else {
-        this.events.delete(event);
+    const trigger = new RegExp(event);
+    const toRemove = [];
+    this.events.forEach((events, key) => {
+      if (trigger.test(key)) {
+        events.forEach((e) => e.fn.apply(this, props));
+        events = events.filter((e) => !e.once);
+        if (events.length > 0) {
+          this.events.set(event, events);
+        } else {
+          toRemove.push(key);
+        }
       }
+    })
+    for (let value of toRemove) {
+      this.events.delete(value);
     }
   }
   on (event, fn, options) {
