@@ -76,5 +76,17 @@ describe("Emmit", () => {
       e.emit("event");
       expect(mock).not.toHaveBeenCalled();
     });
+    it("should remove an event by regular expression", () => {
+      const mock2 = jest.fn();
+      const mock3 = jest.fn();
+      e.on("event.one", mock);
+      e.on("event.two", mock2);
+      e.on("other.event", mock3);
+      expect(e.events.size).toBe(3);
+      e.off(/event\..*/);
+      expect(e.events.size).toBe(1);
+      e.emit("other.event");
+      expect(mock3).toHaveBeenCalled();
+    })
   });
 });

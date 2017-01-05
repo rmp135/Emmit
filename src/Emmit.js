@@ -32,7 +32,16 @@ export default class Emmit {
     this.events.get(event).push(options);
   }
   off (event) {
-    this.events.delete(event);
+    const filter = new RegExp(event);
+    const toRemove = [];
+    this.events.forEach((events, key) => {
+      if (filter.test(key)) {
+        toRemove.push(key);
+      }
+    });
+    for (let value of toRemove) {
+      this.events.delete(value);
+    }
   }
   once (event, f) {
     this.on(event, f, { once: true });
