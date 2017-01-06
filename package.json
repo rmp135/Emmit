@@ -1,13 +1,12 @@
 {
   "name": "emmit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "dist/Emmit.js",
   "license": "MIT",
   "author": {
     "name": "Ryan Poole",
     "email": "rmp135@gmail.com"
   },
-  "private": true,
   "scripts": {
     "test": "jest /src",
     "build": "babel ./src/Emmit.js -o ./dist/Emmit.js"
