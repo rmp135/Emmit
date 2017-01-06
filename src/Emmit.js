@@ -7,8 +7,7 @@ export default class Emmit {
     this.events.forEach((events, key) => {
       if (trigger.test(key)) {
         events.forEach((e) => e.fn.apply(this, props));
-        events = events.filter((e) => !e.once);
-        this.events.set(event, events);
+        this.events.set(key, events.filter((e) => !e.once));
       }
     });
     const nonEmpty = [...this.events].filter((e) => {

@@ -24,11 +24,26 @@ describe("Emmit", () => {
     it("should only trigger once", () => {
       e.once("event", mock);
       e.emit("event");
+      expect(e.events.size).toBe(0);
       expect(mock).toHaveBeenCalled();
       mock.mockReset();
       e.emit("event");
       expect(mock).not.toHaveBeenCalled();
     });
+    it("should trigger all events given by regular expression and remove them", () => {
+      const mock2 = jest.fn();
+      e.once("event.one", mock);
+      e.once("event.two", mock2);
+      e.emit(/event\..*/);
+      expect(mock).toHaveBeenCalled();
+      expect(mock2).toHaveBeenCalled();
+      expect(e.events.size).toBe(0);
+      mock.mockReset();
+      mock2.mockReset();
+      e.emit(/event\..*/);
+      expect(mock).not.toHaveBeenCalled();
+      expect(mock2).not.toHaveBeenCalled();
+    })
   });
   describe("on", () => {
     it("should add an event to the event list", () => {
